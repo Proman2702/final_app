@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   bool show_spheres = true;
   bool updated = false;
   String? ip;
+  String? ip2;
 
   @override
   void initState() {
@@ -42,9 +43,16 @@ class _HomePageState extends State<HomePage> {
   void update() async {
     //objects = await db.getItems();
     var res = await NetService().getModules(ip!);
+    var dat = await NetService().getData(ip2!);
 
     module_from = res!['sender'];
     module_to = res['listener'];
+    heatmap = dat!;
+
+    for (var i = 0; i < Random().nextInt(10); i++) {
+      stations_E.add([Random().nextInt(64), Random().nextInt(64)]);
+      stations_K.add([Random().nextInt(64), Random().nextInt(64)]);
+    }
 
     for (var i in stations_K) {
       for (var j = 0; j < heatmap.length; j++) {
@@ -203,7 +211,27 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      labelText: 'Ввод айпи',
+                      labelText: 'Ввод айпи для модулей',
+                      labelStyle: TextStyle(fontSize: 16, color: Colors.black38),
+                      maintainHintHeight: false,
+                      contentPadding: EdgeInsets.only(bottom: 12),
+                      border: InputBorder.none),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                alignment: Alignment.center,
+                width: double.infinity,
+                height: 40,
+                decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.circular(15)),
+                child: TextField(
+                  onChanged: (value) => setState(() {
+                    ip2 = value;
+                  }),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      labelText: 'Ввод айпи для данных',
                       labelStyle: TextStyle(fontSize: 16, color: Colors.black38),
                       maintainHintHeight: false,
                       contentPadding: EdgeInsets.only(bottom: 12),

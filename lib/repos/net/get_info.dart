@@ -27,6 +27,20 @@ class NetService {
     return null;
   }
 
+  Future<List?> getData(String ip) async {
+    try {
+      Response response = await dio.get(
+        ip,
+        data: {},
+      );
+      print(response.data);
+      return response.data['message']['data'];
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
   Future<double?> getWeather({required String lan, required String lon, required String date}) async {
     try {
       Response response = await dio.get(
